@@ -1,2 +1,3 @@
 export * from './environment';
-export * from './zendesk-sandbox-copy.component';
+export * from './app.component'
+export * from './services/context';

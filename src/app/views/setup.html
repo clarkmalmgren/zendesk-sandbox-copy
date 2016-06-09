@@ -1,0 +1,13 @@
+
+<div class="content">
+  <h2>Enter Your Creds</h2>
+  <form>
+    <md-input placeholder="Production Account Name (not URL)" [(ngModel)]="context.production"></md-input>
+    <md-input placeholder="Sandbox Account Name (not URL)" [(ngModel)]="context.sandbox"></md-input>
+
+    <md-input placeholder="Administrator Email" type="email" [(ngModel)]="context.email"></md-input>
+    <md-input placeholder="Administrator Password" type="password" [(ngModel)]="context.password"></md-input>
+
+    <a [routerLink]="['/prepare']" md-raised-button>Next</a>
+  </form>
+</div>
