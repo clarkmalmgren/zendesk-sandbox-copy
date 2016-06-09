@@ -10,28 +10,46 @@ export class Zendesk {
 
   constructor(private context: Context, private http: Http) {}
 
-  base(prod: boolean) {
-    return 'https://' + (prod ? this.context.production : this.context.sandbox) + '.zendesk.com/api/v2';
+  base(isProd: boolean) {
+    return 'https://' + (isProd ? this.context.production : this.context.sandbox) + '.zendesk.com/api/v2';
   }
 
   options(): RequestOptions {
     let options : RequestOptions = new RequestOptions();
     let headers = options.headers = new Headers();
+    headers.append('Content-Type', 'application/json');
     headers.append('Authorization','Basic ' + btoa(`${this.context.email}:${this.context.password}`));
     return options; 
   }
 
-  listFields(prod: boolean): Observable<TicketField[]> {
-    return this.http.get(`${this.base(prod)}/ticket_fields.json`, this.options())
+  listFields(isProd: boolean): Observable<TicketField[]> {
+    return this.http.get(`${this.base(isProd)}/ticket_fields.json`, this.options())
       .map((response) => {
         return response.json().ticket_fields as TicketField[];
       });
   }
 
-  createField(prod: boolean, field: TicketField): Observable<TicketField> {
-    let payload = JSON.stringify(field);
+  createField(isProd: boolean, field: TicketField): Observable<TicketField> {
+    let clone = {};
+    [
+      'type',
+      'title',
+      'description',
+      'active',
+      'required',
+      'collapsed_for_agents',
+      'regexp_for_validation',
+      'title_in_portal',
+      'visible_in_portal',
+      'editable_in_portal',
+      'required_in_portal',
+      'tag',
+      'custom_field_options'
+    ].forEach((key) => { clone[key] = field[key]; });
+
+    let payload = JSON.stringify({ ticket_field : clone });
     
-    return this.http.post(`${this.base(prod)}/ticket_fields.json`, payload, this.options())
+    return this.http.post(`${this.base(isProd)}/ticket_fields.json`, payload, this.options())
       .map((response) => {
         return response.json().ticket_field as TicketField;
       });

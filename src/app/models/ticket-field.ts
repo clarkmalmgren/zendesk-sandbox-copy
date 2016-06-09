@@ -20,4 +20,24 @@ export interface TicketField {
   created_at: string;
   updated_at: string;
   removable: boolean
+  custom_field_options: any[];
+}
+
+export function isCustomField(field: TicketField):boolean {
+    switch (field.type) {
+      case 'text':
+      case 'textarea':
+      case 'checkbox':
+      case 'date':
+      case 'integer':
+      case 'decimal':
+      case 'regexp':
+      case 'tagger':
+        return true;
+    }
+    return false;
+}
+
+export function isSystemField(field: TicketField): boolean {
+  return !isCustomField(field);
 }

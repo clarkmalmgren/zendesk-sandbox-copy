@@ -9,6 +9,6 @@ export class Context {
   email : string;
   password : string;
 
-  field_mappings : { [ id : number] : number };
-  form_mappings : { [ id : number] : number };
+  field_mappings : { [ id : number] : number } = {};
+  form_mappings : { [ id : number] : number } = {};
 }

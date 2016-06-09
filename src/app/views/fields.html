@@ -6,6 +6,7 @@
       <md-icon md-list-avatar *ngIf="!status[field.id]">sync</md-icon>
       <md-icon md-list-avatar *ngIf="status[field.id] == 'active'" class="rotating">sync</md-icon>
       <md-icon md-list-avatar *ngIf="status[field.id] == 'success'">done</md-icon>
+      <md-icon md-list-avatar *ngIf="status[field.id] == 'skipped'">sync_disabled</md-icon>
       <md-icon md-list-avatar *ngIf="status[field.id] == 'failure'">sync_problem</md-icon>
 
       <h3 md-line>{{field.title}} [ {{field.type}} ]</h3>

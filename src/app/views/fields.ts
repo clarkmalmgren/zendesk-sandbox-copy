@@ -4,7 +4,7 @@ import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 import { Context } from '../services/context';
 import { Zendesk } from '../services/zendesk';
-import { TicketField } from '../models/ticket-field';
+import { TicketField, isSystemField } from '../models/ticket-field';
 
 @Component({
   moduleId: module.id,
@@ -35,19 +35,24 @@ export class FieldsComponent implements OnInit {
     }
 
     let field = this.ticket_fields[index];
-    this.status[field.id] = 'active';
-    
-    this.zendesk.createField(false, field)
-      .subscribe(
-        (created) => {
-          this.context.field_mappings[field.id] = created.id;
-          this.status[field.id] = 'success';
-          this.sync(index + 1);
-        },
-        (error) => {
-          this.status[field.id] = 'failure';
-          this.sync(index + 1);
-        }
-      );
+
+    if (!field.active || isSystemField(field)) {
+      this.status[field.id] = 'skipped';
+      this.sync(index + 1);
+    } else {
+      this.status[field.id] = 'active';
+      this.zendesk.createField(false, field)
+        .subscribe(
+          (created) => {
+            this.context.field_mappings[field.id] = created.id;
+            this.status[field.id] = 'success';
+            this.sync(index + 1);
+          },
+          (error) => {
+            this.status[field.id] = 'failure';
+            this.sync(index + 1);
+          }
+        );
+    }
   }
 }
