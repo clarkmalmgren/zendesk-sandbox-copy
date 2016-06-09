@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES, Routes, Router } from '@angular/router';
 
 import { SetupComponent } from './views/setup';
-import { PrepareComponent } from './views/prepare';
+import { FieldsComponent } from './views/fields';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +13,7 @@ import { PrepareComponent } from './views/prepare';
 })
 @Routes([
   { path: '/', component: SetupComponent },
-  { path: '/prepare', component: PrepareComponent }
+  { path: '/fields', component: FieldsComponent }
 ])
 export class ZendeskSandboxCopyAppComponent implements OnInit {
 
