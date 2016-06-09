@@ -16,7 +16,7 @@ $ npm install -g angular-cli
 $ ng serve
 ```
 
-Then open up chrome (only one I tested on) to (http://localhost:4200).
+Then open up chrome (only one I tested on) to [http://localhost:4200](http://localhost:4200).
 
 MAKE SURE that you put in the correct production and sandbox account names. Don't flip them
 or you are gonna have a bad time.
