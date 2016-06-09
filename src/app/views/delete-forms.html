@@ -1,0 +1,17 @@
+
+<div class="content">
+
+  <md-list>
+    <md-list-item *ngFor="let form of ticket_forms">
+      <md-icon md-list-avatar *ngIf="!status[form.id]">sync</md-icon>
+      <md-icon md-list-avatar *ngIf="status[form.id] == 'active'" class="rotating">sync</md-icon>
+      <md-icon md-list-avatar *ngIf="status[form.id] == 'success'">delete</md-icon>
+      <md-icon md-list-avatar *ngIf="status[form.id] == 'skipped'">sync_disabled</md-icon>
+      <md-icon md-list-avatar *ngIf="status[form.id] == 'failure'">sync_problem</md-icon>
+
+      <h3 md-line>{{form.title}}</h3>
+      <span md-line>{{form.display_name}}</span>      
+    </md-list-item>
+  </md-list>
+
+</div>

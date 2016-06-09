@@ -4,6 +4,8 @@ import { ROUTER_DIRECTIVES, Routes, Router } from '@angular/router';
 import { SetupComponent } from './views/setup';
 import { CopyFieldsComponent } from './views/copy-fields';
 import { DeleteFieldsComponent } from './views/delete-fields';
+import { CopyFormsComponent } from './views/copy-forms';
+import { DeleteFormsComponent } from './views/delete-forms';
 
 @Component({
   moduleId: module.id,
@@ -15,7 +17,9 @@ import { DeleteFieldsComponent } from './views/delete-fields';
 @Routes([
   { path: '/', component: SetupComponent },
   { path: '/copy-fields', component: CopyFieldsComponent },
-  { path: '/delete-fields', component: DeleteFieldsComponent }
+  { path: '/delete-fields', component: DeleteFieldsComponent },
+  { path: '/copy-forms', component: CopyFormsComponent },
+  { path: '/delete-forms', component: DeleteFormsComponent }
 ])
 export class ZendeskSandboxCopyAppComponent implements OnInit {
 

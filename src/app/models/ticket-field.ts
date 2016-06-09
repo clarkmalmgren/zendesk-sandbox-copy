@@ -20,6 +20,7 @@ export interface TicketField {
   created_at: string;
   updated_at: string;
   removable: boolean
+  system_field_options: any[];
   custom_field_options: any[];
 }
 
@@ -40,4 +41,21 @@ export function isCustomField(field: TicketField):boolean {
 
 export function isSystemField(field: TicketField): boolean {
   return !isCustomField(field);
+}
+
+export function cloneTicketField(field: TicketField): TicketField {
+  let clone = {} as TicketField;
+
+  for (var key in field) {
+    clone[key] = field[key];
+  }
+
+  delete clone.id;
+  delete clone.url;
+  delete clone.created_at;
+  delete clone.updated_at;
+  delete clone.system_field_options;
+  delete clone.removable;
+
+  return clone;
 }

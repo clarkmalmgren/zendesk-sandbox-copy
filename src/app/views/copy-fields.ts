@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
 import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
@@ -19,7 +20,8 @@ export class CopyFieldsComponent implements OnInit {
   status : { [id : number] : string } = { };
 
   constructor(public context: Context,
-              private zendesk: Zendesk) {}
+              private zendesk: Zendesk,
+              private router: Router) {}
 
   ngOnInit() {
     this.zendesk.listFields(true)
@@ -31,12 +33,17 @@ export class CopyFieldsComponent implements OnInit {
 
   sync(index: number) {
     if (index >= this.ticket_fields.length) {
+      this.router.navigate(['/delete-forms']);
       return;
     }
 
     let field = this.ticket_fields[index];
 
-    if (!field.active || isSystemField(field)) {
+    if (!field.active) {
+      this.status[field.id] = 'skipped';
+      this.sync(index + 1);
+    } else if (isSystemField(field)) {
+      this.context.field_mappings[field.id] = this.context.system_mapping[field.type];
       this.status[field.id] = 'skipped';
       this.sync(index + 1);
     } else {
