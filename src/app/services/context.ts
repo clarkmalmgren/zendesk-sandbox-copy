@@ -11,4 +11,5 @@ export class Context {
 
   field_mappings : { [ id : number] : number } = {};
   form_mappings : { [ id : number] : number } = {};
+  system_mapping : { [ type: string ] : number } = {};
 }

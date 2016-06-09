@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
 import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
@@ -8,49 +9,51 @@ import { TicketField, isSystemField } from '../models/ticket-field';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'fields.html',
-  styleUrls: [ 'fields.css' ],
+  templateUrl: 'delete-fields.html',
+  styleUrls: [ 'delete-fields.css' ],
   directives: [ MD_LIST_DIRECTIVES, MD_ICON_DIRECTIVES ],
   providers: [ MdIconRegistry, Zendesk ]
 })
-export class FieldsComponent implements OnInit {
+export class DeleteFieldsComponent implements OnInit {
 
   ticket_fields : TicketField[];
   status : { [id : number] : string } = { };
 
   constructor(public context: Context,
-              private zendesk: Zendesk) {}
+              private zendesk: Zendesk,
+              private router: Router) {}
 
   ngOnInit() {
-    this.zendesk.listFields(true)
+    this.zendesk.listFields(false)
       .subscribe((fields) => {
         this.ticket_fields = fields;
-        this.sync(0);
+        this.deleteItem(0);
       });
   }
 
-  sync(index: number) {
+  deleteItem(index: number) {
     if (index >= this.ticket_fields.length) {
+      this.router.navigate(['/copy-fields']);
       return;
     }
 
     let field = this.ticket_fields[index];
 
-    if (!field.active || isSystemField(field)) {
+    if (isSystemField(field)) {
       this.status[field.id] = 'skipped';
-      this.sync(index + 1);
+      this.context.system_mapping[field.type] = field.id;
+      this.deleteItem(index + 1);
     } else {
       this.status[field.id] = 'active';
-      this.zendesk.createField(false, field)
+      this.zendesk.deleteField(false, field)
         .subscribe(
-          (created) => {
-            this.context.field_mappings[field.id] = created.id;
+          () => {
             this.status[field.id] = 'success';
-            this.sync(index + 1);
+            this.deleteItem(index + 1);
           },
           (error) => {
             this.status[field.id] = 'failure';
-            this.sync(index + 1);
+            this.deleteItem(index + 1);
           }
         );
     }

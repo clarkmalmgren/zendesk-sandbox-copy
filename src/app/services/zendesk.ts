@@ -54,4 +54,8 @@ export class Zendesk {
         return response.json().ticket_field as TicketField;
       });
   }
+
+  deleteField(isProd: boolean, field: TicketField): Observable<any> {
+    return this.http.delete(`${this.base(isProd)}/ticket_fields/${field.id}.json`, this.options());
+  }
 }
